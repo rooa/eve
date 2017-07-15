@@ -1,0 +1,9 @@
+name: torch-gel
+dependencies:
+    - python=3.6
+    - numpy
+    - keras
+    - h5py
+    - pillow
+    - tqdm
+    - pandas=0.19.2

@@ -1,12 +1,12 @@
 name: eve
 dependencies:
     - python=3.6
-    - numpy
-    - h5py
-    - pillow
-    - tqdm
-    - pandas=0.19.2
     - matplotlib
+    - numpy
+    - pandas=0.19.2
+    - pillow
+    - scipy
     - seaborn
+    - tqdm
     - pip:
         - keras

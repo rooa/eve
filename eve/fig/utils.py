@@ -38,7 +38,7 @@ def sns_set_defaults(context, style):
             "pgf.rcfonts": True,
             "text.usetex": True,
             "font.serif": [],
-            "lines.linewidth": 0.75,
+            "lines.linewidth": 0.85,
             "xtick.direction": "inout",
             "xtick.major.size": 4,
             "xtick.major.pad": 2,

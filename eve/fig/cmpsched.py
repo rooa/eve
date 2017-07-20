@@ -23,7 +23,7 @@ def main():
     fig = plt.figure()
     ax = fig.add_subplot(121)
 
-    with open("data/results/lrsched/resnet/eve.pkl", "rb") as f:
+    with open("data/results/lrsched/eve.pkl", "rb") as f:
         data = pickle.load(f)
     ax.semilogy(range(1, 101), data["best_full_losses"],
                 color=OPT_COLORS["eve"], label="Eve")
@@ -32,7 +32,7 @@ def main():
     best_lrs = {}
     for dec in ["exp", "inv"]:
         best_loss = np.inf
-        for fname in glob("data/results/lrsched/resnet/adam_{}*".format(dec)):
+        for fname in glob("data/results/lrsched/adam_{}*".format(dec)):
             with open(fname, "rb") as f:
                 d = pickle.load(f)
             if d["best_full_losses"][-1] < best_loss:
@@ -52,16 +52,12 @@ def main():
                 label="Adam ($1/t$ decay)",
                 color=[255./255., 197./255., 26./255.])
 
-    # lgd = ax.legend(loc="upper right")
-    # for h in lgd.legendHandles:
-    #     h.set_linewidth(1.5)
-
     sns.despine(fig, ax, top=True, right=True, bottom=False, left=False)
     ax.tick_params(axis="y", which="minor", left="off")
 
     ax = fig.add_subplot(122)
 
-    with open("data/results/lrsched/resnet/eve.pkl", "rb") as f:
+    with open("data/results/lrsched/eve.pkl", "rb") as f:
         data = pickle.load(f)
     ax.semilogy(range(1, 101), data["best_full_losses"],
                 color=OPT_COLORS["eve"], label="Eve")
@@ -73,7 +69,7 @@ def main():
     decays = ["0.5", "1", "2", "4", "8"]
     for i in range(5):
         with open(
-            "data/results/lrsched/resnet/adam_exp_lr1e-3_decay{}e-5.pkl".format(
+            "data/results/lrsched/adam_exp_lr1e-3_decay{}e-5.pkl".format(
                 decays[i]),
             "rb"
         ) as f:
@@ -83,7 +79,7 @@ def main():
                     label=r"Adam (exp.: ${}$)".format(decays[i]))
 
     ax.semilogy([], [], color=[255./255., 197./255., 26./255.],
-                label="Adam (1/t decay)")
+                label="Adam ($1/t$ decay)")
 
     ax.set_xlabel("Epoch")
     ax.set_ylabel("Loss")

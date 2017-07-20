@@ -5,6 +5,7 @@ from argparse import ArgumentParser
 
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 from eve.fig.utils import OPT_COLORS, sns_set_defaults, save_tight
 
@@ -24,15 +25,14 @@ def main():
     ax = fig.add_subplot(111)
 
     label_done = False
-    for c in [5, 10, 15]:#, 20]:
+    with open("data/results/hypsearch/eve.pkl", "rb") as f:
+        d = pickle.load(f)
+    df = d["losses_df"]
+    for c in [2, 5, 10, 15, 20]:
         # Plot Eve results for this value of c
-        with open("data/results/hypsearch/resnet/hyp_eve_c{}.pkl".format(c),
-                  "rb") as f:
-            d = pickle.load(f)
-        df = d["losses_df"]
         for beta in [0.001, 0.01, 0.1, 0.5, 0.9, 0.99, 0.999]:
-            losses = list(df[(df.beta == beta) &
-                             (df.c == c)].best_full_losses)[0]
+            losses = list(df[np.isclose(df.beta, beta) &
+                             np.isclose(df.c, c)].best_full_losses)[0]
 
             if beta == 0.999 and c == 10:
                 ax.semilogy(range(1, 101), losses, color=OPT_COLORS["eve"],
@@ -47,7 +47,7 @@ def main():
                                 zorder=-1, linewidth=0.5, label="Eve (other)")
 
     # Plot Adam
-    with open("data/results/hypsearch/resnet/adam.pkl", "rb") as f:
+    with open("data/results/hypsearch/adam.pkl", "rb") as f:
         d = pickle.load(f)
     ax.semilogy(d["best_full_losses"], color=OPT_COLORS["adam"], label="Adam",
                 linewidth=1)

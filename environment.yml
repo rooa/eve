@@ -1,4 +1,4 @@
-name: torch-gel
+name: eve
 dependencies:
     - python=3.6
     - numpy

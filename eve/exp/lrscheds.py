@@ -55,3 +55,15 @@ class ExponentialDecayLRSchedule(LRSchedule):
 
     def get_lr(self):
         return self.lr_init * np.exp(-self.decay*self.iters)
+
+
+class SqrtTimeDecaySchedule(LRSchedule):
+
+    """Inverse square root time decay learning rate schedule.
+
+    The learning rate at iteration t is computed as
+    lr_init / sqrt(1 + decay*t).
+    """
+
+    def get_lr(self):
+        return self.lr_init / np.sqrt(1. + self.decay*self.iters)

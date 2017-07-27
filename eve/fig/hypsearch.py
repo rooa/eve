@@ -1,5 +1,6 @@
 """hypsearch.py: plot results of the hyperparameter sensitiviy experiment."""
 
+import os
 import pickle
 from argparse import ArgumentParser
 
@@ -15,6 +16,7 @@ OTHER_EVES_COLOR = [255./255., 194./255, 255./255]
 def main():
     """Create and save the figure."""
     arg_parser = ArgumentParser()
+    arg_parser.add_argument("--res-dir", type=str, required=True)
     arg_parser.add_argument("--save-path", type=str, required=True)
     arg_parser.add_argument("--fig-size", type=float, nargs="+", required=True)
     arg_parser.add_argument("--context", type=str, default="paper")
@@ -25,7 +27,7 @@ def main():
     ax = fig.add_subplot(111)
 
     label_done = False
-    with open("data/results/hypsearch/eve.pkl", "rb") as f:
+    with open(os.path.join(args.res_dir, "eve.pkl"), "rb") as f:
         d = pickle.load(f)
     df = d["losses_df"]
     for c in [2, 5, 10, 15, 20]:
@@ -47,7 +49,7 @@ def main():
                                 zorder=-1, linewidth=0.5, label="Eve (other)")
 
     # Plot Adam
-    with open("data/results/hypsearch/adam.pkl", "rb") as f:
+    with open(os.path.join(args.res_dir, "adam.pkl"), "rb") as f:
         d = pickle.load(f)
     ax.semilogy(d["best_full_losses"], color=OPT_COLORS["adam"], label="Adam",
                 linewidth=1)

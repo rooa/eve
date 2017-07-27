@@ -1,5 +1,6 @@
 """cmpsched.py: plot results of comparing Eve aginst learning rate schedules."""
 
+import os
 import pickle
 from glob import glob
 from argparse import ArgumentParser
@@ -14,6 +15,8 @@ from eve.fig.utils import OPT_COLORS, sns_set_defaults, save_tight
 def main():
     """Create and save the figure."""
     arg_parser = ArgumentParser()
+    arg_parser.add_argument("--res-dir", type=str, required=True)
+    arg_parser.add_argument("--adam-best-lr", type=str, required=True)
     arg_parser.add_argument("--save-path", type=str, required=True)
     arg_parser.add_argument("--fig-size", type=float, nargs="+", required=True)
     arg_parser.add_argument("--context", type=str, default="paper")
@@ -23,7 +26,7 @@ def main():
     fig = plt.figure()
     ax = fig.add_subplot(121)
 
-    with open("data/results/lrsched/eve.pkl", "rb") as f:
+    with open(os.path.join(args.res_dir, "eve.pkl"), "rb") as f:
         data = pickle.load(f)
     ax.semilogy(range(1, 101), data["best_full_losses"],
                 color=OPT_COLORS["eve"], label="Eve")
@@ -32,7 +35,7 @@ def main():
     best_lrs = {}
     for dec in ["exp", "inv"]:
         best_loss = np.inf
-        for fname in glob("data/results/lrsched/adam_{}*".format(dec)):
+        for fname in glob(os.path.join(args.res_dir, "adam_{}*".format(dec))):
             with open(fname, "rb") as f:
                 d = pickle.load(f)
             if d["best_full_losses"][-1] < best_loss:
@@ -57,7 +60,7 @@ def main():
 
     ax = fig.add_subplot(122)
 
-    with open("data/results/lrsched/eve.pkl", "rb") as f:
+    with open(os.path.join(args.res_dir, "eve.pkl"), "rb") as f:
         data = pickle.load(f)
     ax.semilogy(range(1, 101), data["best_full_losses"],
                 color=OPT_COLORS["eve"], label="Eve")
@@ -69,8 +72,8 @@ def main():
     decays = ["0.5", "1", "2", "4", "8"]
     for i in range(5):
         with open(
-            "data/results/lrsched/adam_exp_lr1e-3_decay{}e-5.pkl".format(
-                decays[i]),
+            os.path.join(args.res_dir, "adam_exp_lr{}_decay{}e-5.pkl".format(
+                args.adam_best_lr, decays[i])),
             "rb"
         ) as f:
             data = pickle.load(f)

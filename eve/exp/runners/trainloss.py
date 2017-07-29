@@ -38,12 +38,18 @@ def main():
     arg_parser.add_argument("--model", type=str, required=True,
                             choices=get_subclass_names(Model))
     arg_parser.add_argument("--metrics", type=str, nargs="+")
+    arg_parser.add_argument("--saved-loss", type=str, choices=["train", "test"],
+                            default="train")
     arg_parser.add_argument("--save-path", type=str, required=True)
     args = arg_parser.parse_args()
 
     # Load data
     dataset = build_subclass_object(Dataset, args.dataset, args.dataset_kwargs)
-    X, y = dataset.train_data
+    X_tr, y_tr = dataset.train_data
+    X_te, y_te = dataset.test_data
+
+    # For the callback, X and y depend on saved-loss
+    X_cb, y_cb = (X_tr, y_tr) if args.saved_loss is "train" else (X_te, y_te)
 
     # Loop over different learning rates
     best_final_loss = None
@@ -53,7 +59,7 @@ def main():
 
         callbacks = [
             BatchLossHistory(),
-            EpochFullLossHistory(X, y, args.batch_size)
+            EpochFullLossHistory(X_cb, y_cb, args.batch_size)
         ]
         args.opt_kwargs["lr"] = lr
         if args.opt == "Eve":
@@ -65,13 +71,13 @@ def main():
         model.model.compile(loss=model.loss, optimizer=opt,
                             metrics=args.metrics)
 
-        model.model.fit(X, y, batch_size=args.batch_size,
+        model.model.fit(X_tr, y_tr, batch_size=args.batch_size,
                         epochs=args.epochs, callbacks=callbacks)
 
         full_losses = callbacks[1].losses
 
-        if best_final_loss is None or full_losses[-1] < best_final_loss:
-            best_final_loss = full_losses[-1]
+        if best_final_loss is None or min(full_losses) < best_final_loss:
+            best_final_loss = min(full_losses)
             best_full_losses = full_losses
             best_batch_losses = callbacks[0].batch_losses
             best_lr = lr

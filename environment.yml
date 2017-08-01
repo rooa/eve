@@ -3,7 +3,7 @@ dependencies:
     - python=3.6
     - matplotlib
     - numpy
-    - pandas=0.19.2
+    - pandas
     - pillow
     - scipy
     - seaborn

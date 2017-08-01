@@ -6,7 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 USER root
 RUN pip install git+git://github.com/Theano/Theano.git
 RUN pip install keras
-RUN pip install --upgrade pandas==0.19.2
+RUN pip install --upgrade pandas
 RUN pip install tqdm
 
 USER docker

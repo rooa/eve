@@ -10,7 +10,8 @@ import json
 from argparse import ArgumentParser
 
 import numpy as np
-np.random.seed(615879206)
+from eve.exp.runners.utils import EXP_SEED
+np.random.seed(EXP_SEED)
 
 from keras.optimizers import Optimizer
 

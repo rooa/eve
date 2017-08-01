@@ -9,7 +9,8 @@ import json
 from argparse import ArgumentParser
 
 import numpy as np
-np.random.seed(1300643330)
+from eve.exp.runners.utils import EXP_SEED
+np.random.seed(EXP_SEED)
 
 import pandas as pd
 

@@ -9,7 +9,8 @@ import itertools
 from argparse import ArgumentParser
 
 import numpy as np
-np.random.seed(1862569059)
+from eve.exp.runners.utils import EXP_SEED
+np.random.seed(EXP_SEED)
 
 from keras.optimizers import Adam
 

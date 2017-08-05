@@ -8,5 +8,5 @@ dependencies:
     - scipy
     - seaborn
     - tqdm
-    - pip:
-        - keras
+    - pygpu=0.6.4
+    - keras

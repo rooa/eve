@@ -6,7 +6,6 @@ specified, and the one which leads to the lowest loss is selected.
 """
 
 import json
-
 from argparse import ArgumentParser
 
 import numpy as np

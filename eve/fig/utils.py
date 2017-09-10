@@ -53,7 +53,7 @@ def sns_set_defaults(context, style):
     )
 
 
-def save_tight(fig, size, save_path, bbox_extra_artists=None):
+def save_tight(fig, size, save_path, bbox_extra_artists=None, fig_rect=None):
     """Set a figure to tight layout, and save.
 
     Arguments:
@@ -61,11 +61,11 @@ def save_tight(fig, size, save_path, bbox_extra_artists=None):
         size: 2-tuple: size of the figure in inches.
         save_path: str: full path of the save location.
         bbox_extra_artists: tuple: extra artists to be passed to save function.
+        fig_rect: rect property for tight_layout.
     """
+    if fig_rect is None:
+        fig_rect = (0.05, 0.05, 0.95, 0.95)
+
     fig.set_size_inches(*size)
-    fig.tight_layout(pad=0, w_pad=0, h_pad=0)
-    if bbox_extra_artists is None:
-        fig.savefig(save_path)
-    else:
-        fig.savefig(save_path, bbox_inches="tight",
-                    bbox_extra_artists=bbox_extra_artists)
+    fig.tight_layout(pad=0, w_pad=0, h_pad=0, rect=fig_rect)
+    fig.savefig(save_path)

@@ -12,7 +12,7 @@ def main():
     """Create and save the legend."""
     arg_parser = ArgumentParser()
     arg_parser.add_argument("--save-path", type=str, required=True)
-    arg_parser.add_argument("--fig-size", type=float, nargs="+", required=True)
+    arg_parser.add_argument("--fig-size", type=float, nargs=2, required=True)
     arg_parser.add_argument("--context", type=str, default="paper")
     args = arg_parser.parse_args()
 

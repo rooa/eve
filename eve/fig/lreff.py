@@ -14,7 +14,7 @@ def main():
     """Create and save the figure."""
     arg_parser = ArgumentParser()
     arg_parser.add_argument("--save-path", type=str, required=True)
-    arg_parser.add_argument("--fig-size", type=float, nargs="+", required=True)
+    arg_parser.add_argument("--fig-size", type=float, nargs=2, required=True)
     arg_parser.add_argument("--context", type=str, default="paper")
     args = arg_parser.parse_args()
 
@@ -24,23 +24,24 @@ def main():
     ax = fig.add_subplot(111)
 
     tasks = ["resnet", "ptb", "imdb", "babi_q14"]
-    task_names = ["CIFAR 100", "PTB", "IMDB", "BABI"]
+    task_names = ["CIFAR-100", "PTB", "IMDb", "bAbI"]
 
     for i in range(4):
         with open(os.path.join("data/results/trainloss", tasks[i],
                                "eve.pkl"), "rb") as f:
             data = pickle.load(f)
-        ax.semilogy(data["best_lr_effs"], label=task_names[i])
+        ax.semilogy(data["best_lr_effs"], label=task_names[i], zorder=-1)
 
-    ax.set_ylim(0.9e-4, 1.1e-2)
+    ax.set_ylim(1e-4, 1e-2)
     ax.set_yticks([1e-4, 1e-3, 1e-2])
 
     ax.set_xlim(0, 40000)
     ax.set_xticks([10000, 20000, 30000, 40000])
-    ax.set_xticklabels(["10k Iters", "20k Iters", "30k Iters", "40k Iters"])
-    ax.tick_params(axis="x", pad=-12)
+    ax.set_xticklabels(["$10$", "$20$", "$30$", "$40$"])
 
     ax.set_ylabel(r"Effective learning rate ($\alpha_1 / d_t$)")
+    ax.set_xlabel("Horizontal axis: thousands of iterations")
+    ax.xaxis.set_label_coords(0.5, 0)
 
     lgd = ax.legend(loc="upper right")
     for h in lgd.legendHandles:

@@ -2,6 +2,7 @@
 
 import os
 import pickle
+from glob import glob
 from argparse import ArgumentParser
 
 import matplotlib.pyplot as plt
@@ -18,7 +19,12 @@ def main():
     arg_parser = ArgumentParser()
     arg_parser.add_argument("--res-dir", type=str, required=True)
     arg_parser.add_argument("--save-path", type=str, required=True)
-    arg_parser.add_argument("--fig-size", type=float, nargs="+", required=True)
+    arg_parser.add_argument("--fig-size", type=float, nargs=2, required=True)
+    arg_parser.add_argument("--ylim", type=float, nargs=2)
+    arg_parser.add_argument("--no-logscale", action="store_true")
+    arg_parser.add_argument("--add-legend", action="store_true")
+    arg_parser.add_argument("--xticks", type=float, nargs="+")
+    arg_parser.add_argument("--yticks", type=float, nargs="+")
     arg_parser.add_argument("--context", type=str, default="paper")
     args = arg_parser.parse_args()
 
@@ -26,40 +32,56 @@ def main():
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
-    label_done = False
-    with open(os.path.join(args.res_dir, "eve.pkl"), "rb") as f:
-        d = pickle.load(f)
-    df = d["losses_df"]
-    for c in [2, 5, 10, 15, 20]:
-        # Plot Eve results for this value of c
-        for beta in [0.001, 0.01, 0.1, 0.5, 0.9, 0.99, 0.999]:
-            losses = list(df[np.isclose(df.beta, beta) &
-                             np.isclose(df.c, c)].best_full_losses)[0]
+    plot_fun = ax.plot if args.no_logscale else ax.semilogy
 
-            if beta == 0.999 and c == 10:
-                ax.semilogy(range(1, 101), losses, color=OPT_COLORS["eve"],
-                            linewidth=1, label="Eve (default)")
+    label_done = False
+    for eve_file in glob(os.path.join(args.res_dir, "*.pkl")):
+        with open(eve_file, "rb") as f:
+            d = pickle.load(f)
+        df = d["losses_df"]
+
+        # Plot Eve results for this file
+        for _, row in df.iterrows():
+            losses = row.best_full_losses
+            if np.isclose(row.beta, 0.999) and np.isclose(row.c, 10):
+                plot_fun(range(1, len(losses)+1), losses,
+                         color=OPT_COLORS["eve"], linewidth=1,
+                         label="Eve (default)")
             else:
                 if label_done:
-                    ax.semilogy(range(1, 101), losses, color=OTHER_EVES_COLOR,
-                                zorder=-1, linewidth=0.5)
+                    plot_fun(range(1, len(losses)+1), losses,
+                             color=OTHER_EVES_COLOR, zorder=-1, linewidth=0.5)
                 else:
                     label_done = True
-                    ax.semilogy(range(1, 101), losses, color=OTHER_EVES_COLOR,
-                                zorder=-1, linewidth=0.5, label="Eve (other)")
+                    plot_fun(range(1, len(losses)+1), losses,
+                             color=OTHER_EVES_COLOR, zorder=-1, linewidth=0.5,
+                             label="Eve (other)")
 
     # Plot Adam
-    with open(os.path.join(args.res_dir, "adam.pkl"), "rb") as f:
+    exp = args.res_dir.split("/")[-1]
+    with open(os.path.join("data", "results", "trainloss", exp, "adam.pkl"),
+              "rb") as f:
         d = pickle.load(f)
-    ax.semilogy(d["best_full_losses"], color=OPT_COLORS["adam"], label="Adam",
-                linewidth=1)
+    plot_fun(d["best_full_losses"], color=OPT_COLORS["adam"], label="Adam",
+             linewidth=1)
+
+    if args.ylim is not None:
+        ax.set_ylim(args.ylim[0], args.ylim[1])
+    ax.set_xlim(0, len(d["best_full_losses"]))
+
+    if args.xticks is not None:
+        ax.set_xticks(args.xticks)
+
+    if args.yticks is not None:
+        ax.set_yticks(args.yticks)
 
     ax.set_xlabel("Epoch")
     ax.set_ylabel("Loss")
 
-    lgd = ax.legend(loc="upper right")
-    for h in lgd.legendHandles:
-        h.set_linewidth(1.5)
+    if args.add_legend:
+        lgd = ax.legend(loc="upper right")
+        for h in lgd.legendHandles:
+            h.set_linewidth(1.5)
 
     sns.despine(fig, ax, top=True, right=True, bottom=False, left=False)
     ax.tick_params(axis="y", which="minor", left="off")

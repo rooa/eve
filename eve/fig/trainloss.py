@@ -60,7 +60,7 @@ def main():
     if args.add_legend:
         box = ax.get_position()
         ax.set_position([box.x0, box.y0, box.width*0.8, box.height])
-        lgd = ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+        lgd = ax.legend(loc="center left", bbox_to_anchor=(1, 0.5), handlelength=1)
         for h in lgd.legendHandles:
             h.set_linewidth(1.5)
 

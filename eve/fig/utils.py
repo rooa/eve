@@ -27,8 +27,9 @@ OPT_LABELS = {
 """Names to be used for describing optimizers in legends."""
 
 
-def sns_set_defaults(context, style):
+def sns_set_defaults(context, style, font=None):
     """Set default values for Seaborn."""
+    serif_fonts = [] if font is None else [font]
     sns.set(
         context="paper",
         style="ticks",
@@ -37,7 +38,7 @@ def sns_set_defaults(context, style):
             "pgf.texsystem": "pdflatex",
             "pgf.rcfonts": True,
             "text.usetex": True,
-            "font.serif": [],
+            "font.serif": serif_fonts,
             "lines.linewidth": 0.85,
             "xtick.direction": "inout",
             "xtick.major.size": 4,

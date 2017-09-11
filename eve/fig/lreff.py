@@ -16,9 +16,10 @@ def main():
     arg_parser.add_argument("--save-path", type=str, required=True)
     arg_parser.add_argument("--fig-size", type=float, nargs=2, required=True)
     arg_parser.add_argument("--context", type=str, default="paper")
+    arg_parser.add_argument("--font", type=str, default=None)
     args = arg_parser.parse_args()
 
-    sns_set_defaults(args.context, style="ticks")
+    sns_set_defaults(args.context, style="ticks", font=args.font)
     sns.set_palette(["#e41a1c", "#377eb8", "#4daf4a", "#984ea3"])
     fig = plt.figure()
     ax = fig.add_subplot(111)

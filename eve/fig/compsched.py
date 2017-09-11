@@ -22,9 +22,10 @@ def main():
     arg_parser.add_argument("--ylim", type=float, nargs=2)
     arg_parser.add_argument("--xticks", type=float, nargs="+")
     arg_parser.add_argument("--yticks", type=float, nargs="+")
+    arg_parser.add_argument("--font", type=str, default=None)
     args = arg_parser.parse_args()
 
-    sns_set_defaults(args.context, style="ticks")
+    sns_set_defaults(args.context, style="ticks", font=args.font)
     fig = plt.figure()
     ax = fig.add_subplot(111)
 

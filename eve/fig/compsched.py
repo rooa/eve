@@ -53,7 +53,7 @@ def main():
              label=r"$e^{-t}$ decay", zorder=-1)
 
     decs = ["inv", "sqrt"]
-    dec_titles = ["$1/t$ decay", r"$1\sqrt{t}$ decay"]
+    dec_titles = ["$1/t$ decay", r"$1/\sqrt{t}$ decay"]
     dec_colors = ["#e41a1c", "#999999"]
     for dec, dec_title, dec_color in zip(decs, dec_titles, dec_colors):
         with open(os.path.join(args.res_dir, "{}.pkl".format(dec)), "rb") as f:

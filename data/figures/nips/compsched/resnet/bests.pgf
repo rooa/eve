@@ -774,15 +774,15 @@
 \definecolor{currentstroke}{rgb}{0.905882,0.160784,0.541176}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{1.585199in}{1.437675in}}%
-\pgfpathlineto{\pgfqpoint{1.807421in}{1.437675in}}%
+\pgfpathmoveto{\pgfqpoint{1.526170in}{1.437675in}}%
+\pgfpathlineto{\pgfqpoint{1.748392in}{1.437675in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.150000,0.150000,0.150000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=1.896310in,y=1.398786in,left,base]{\color{textcolor}\rmfamily\fontsize{8.000000}{9.600000}\selectfont Eve}%
+\pgftext[x=1.837281in,y=1.398786in,left,base]{\color{textcolor}\rmfamily\fontsize{8.000000}{9.600000}\selectfont Eve}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetroundcap%
@@ -791,15 +791,15 @@
 \definecolor{currentstroke}{rgb}{1.000000,0.498039,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{1.585199in}{1.261117in}}%
-\pgfpathlineto{\pgfqpoint{1.807421in}{1.261117in}}%
+\pgfpathmoveto{\pgfqpoint{1.526170in}{1.261117in}}%
+\pgfpathlineto{\pgfqpoint{1.748392in}{1.261117in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.150000,0.150000,0.150000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=1.896310in,y=1.222228in,left,base]{\color{textcolor}\rmfamily\fontsize{8.000000}{9.600000}\selectfont \(\displaystyle e^{-t}\) decay}%
+\pgftext[x=1.837281in,y=1.222228in,left,base]{\color{textcolor}\rmfamily\fontsize{8.000000}{9.600000}\selectfont \(\displaystyle e^{-t}\) decay}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetroundcap%
@@ -808,15 +808,15 @@
 \definecolor{currentstroke}{rgb}{0.894118,0.101961,0.109804}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{1.585199in}{1.100623in}}%
-\pgfpathlineto{\pgfqpoint{1.807421in}{1.100623in}}%
+\pgfpathmoveto{\pgfqpoint{1.526170in}{1.100623in}}%
+\pgfpathlineto{\pgfqpoint{1.748392in}{1.100623in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.150000,0.150000,0.150000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=1.896310in,y=1.061734in,left,base]{\color{textcolor}\rmfamily\fontsize{8.000000}{9.600000}\selectfont \(\displaystyle 1/t\) decay}%
+\pgftext[x=1.837281in,y=1.061734in,left,base]{\color{textcolor}\rmfamily\fontsize{8.000000}{9.600000}\selectfont \(\displaystyle 1/t\) decay}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetroundcap%
@@ -825,15 +825,15 @@
 \definecolor{currentstroke}{rgb}{0.600000,0.600000,0.600000}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{1.585199in}{0.911305in}}%
-\pgfpathlineto{\pgfqpoint{1.807421in}{0.911305in}}%
+\pgfpathmoveto{\pgfqpoint{1.526170in}{0.911305in}}%
+\pgfpathlineto{\pgfqpoint{1.748392in}{0.911305in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.150000,0.150000,0.150000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=1.896310in,y=0.872416in,left,base]{\color{textcolor}\rmfamily\fontsize{8.000000}{9.600000}\selectfont \(\displaystyle 1\sqrt{t}\) decay}%
+\pgftext[x=1.837281in,y=0.872416in,left,base]{\color{textcolor}\rmfamily\fontsize{8.000000}{9.600000}\selectfont \(\displaystyle 1/\sqrt{t}\) decay}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%

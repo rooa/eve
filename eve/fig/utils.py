@@ -1,6 +1,6 @@
 """utils.py: utility functions for plotting figures."""
 
-import seaborn as sns
+import os
 
 
 OPT_COLORS = {
@@ -10,7 +10,7 @@ OPT_COLORS = {
     "rmsprop": "#66a61e",
     "adagrad": "#d95f02",
     "adadelta": "#a6761d",
-    "sgd": "#1b9e77"
+    "sgd": "#1b9e77",
 }
 """Colors used to represent the different optimizers."""
 
@@ -22,51 +22,78 @@ OPT_LABELS = {
     "rmsprop": "RMSprop",
     "adagrad": "Adagrad",
     "adadelta": "Adadelta",
-    "sgd": "SGD"
+    "sgd": "SGD",
 }
 """Names to be used for describing optimizers in legends."""
 
 
-def sns_set_defaults(context, style, font=None):
-    """Set default values for Seaborn."""
-    serif_fonts = [] if font is None else [font]
-    sns.set(
-        context="paper",
-        style="ticks",
-        font="serif",
-        rc={
-            "pgf.texsystem": "pdflatex",
-            "pgf.rcfonts": True,
-            "text.usetex": True,
-            "font.serif": serif_fonts,
-            "lines.linewidth": 0.85,
-            "xtick.direction": "inout",
-            "xtick.major.size": 4,
-            "xtick.major.pad": 2,
-            "ytick.direction": "inout",
-            "ytick.major.size": 4,
-            "ytick.major.pad": 2,
-            "xtick.color": "k",
-            "ytick.color": "k",
-            "axes.edgecolor": "k",
-            "axes.labelcolor": "k",
-        }
-    )
+class Fig:
 
+    """Wrapper around matplotlib figure."""
 
-def save_tight(fig, size, save_path, bbox_extra_artists=None, fig_rect=None):
-    """Set a figure to tight layout, and save.
+    RC_DEFAULT = {
+        # Configure pgf
+        "backend": "pgf",
+        "pgf.texsystem": "lualatex",
+        "pgf.rcfonts": False,  # Fonts are manually specified
+        "pgf.preamble": [
+            r"\usepackage[no-math]{fontspec}",
+            r"\usepackage[dvipsnames]{xcolor}",
+            r"\setmainfont{futura_book.ttf}[Path=\string~/.fonts/]",
+        ],
+        # Configure text
+        "text.color": "k",
+        "text.usetex": True,
+        # Configure lines
+        "lines.linewidth": 1,
+        "lines.color": "k",
+        "lines.markersize": 15,
+        # Configure ticks
+        "xtick.direction": "in",
+        "xtick.color": "k",
+        "xtick.major.size": 2,
+        "xtick.major.width": 1,
+        "xtick.major.pad": 5,
+        "ytick.direction": "in",
+        "ytick.color": "k",
+        "ytick.major.size": 2,
+        "ytick.major.width": 1,
+        "ytick.major.pad": 2,
+        # Configure axes
+        "axes.linewidth": 1,
+        "axes.edgecolor": "k",
+        "axes.labelcolor": "k",
+        "axes.spines.right": False,
+        "axes.spines.top": False,
+        "axes.axisbelow": True,
+        # Configure legend
+        "legend.frameon": False,
+    }
 
-    Arguments:
-        fig: matplotlib figure: the figure to save.
-        size: 2-tuple: size of the figure in inches.
-        save_path: str: full path of the save location.
-        bbox_extra_artists: tuple: extra artists to be passed to save function.
-        fig_rect: rect property for tight_layout.
-    """
-    if fig_rect is None:
-        fig_rect = (0.05, 0.05, 0.95, 0.95)
+    def __init__(self, context="paper", style="ticks", **rc_extra):
+        rc = Fig.RC_DEFAULT.copy()
+        rc.update(rc_extra)
 
-    fig.set_size_inches(*size)
-    fig.tight_layout(pad=0, w_pad=0, h_pad=0, rect=fig_rect)
-    fig.savefig(save_path)
+        import matplotlib as mpl
+
+        mpl.rcParams.update(rc)
+
+        import matplotlib.pyplot as plt
+        import seaborn as sns
+
+        sns.set(context=context, style=style, rc=rc)
+        self.fig = plt.figure()
+        self.mpl = mpl
+        self.plt = plt
+        self.sns = sns
+
+    def save(self, size, save_dir, name, bbox_extra_artists=None):
+        """Save figure to the given path as a pdf image."""
+        self.fig.set_size_inches(*size)
+        self.fig.tight_layout(
+            pad=0, w_pad=0, h_pad=0, rect=(0.05, 0.05, 0.95, 0.95)
+        )
+        self.fig.savefig(
+            os.path.join(save_dir, f"{name}.pdf"),
+            bbox_extra_artists=bbox_extra_artists,
+        )

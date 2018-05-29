@@ -1,0 +1,50 @@
+\documentclass[preview,varwidth,border=5mm]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{algpseudocode}
+
+\begin{document}
+\algnewcommand{\Default}[1]{\State{#1} \Comment{default}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+
+\begin{algorithmic}[1]
+
+\Default{$\alpha_1 = 10^{-3}$}
+\Default{$\beta_1 = 0.9$, $\beta_2 = 0.999$, $\beta_3 = 0.999$}
+\Default{$c = 10$}
+\Default{$\epsilon = 10^{-8}$}
+\Statex
+
+\State $m_0 = v_0 \gets 0$
+\State $t \gets 0$
+\Statex
+
+\While{stopping condition is not reached}
+  \State $t \gets t + 1$
+  \State $g_t \gets \nabla_\theta f(\theta_t)$
+  \State $m_t \gets \beta_1 m_{t-1} + (1 - \beta_1)g_t$
+  \State $\wh{m}_t \gets m_t / (1 - \beta_1^t)$
+  \State $v_t \gets \beta_2 v_{t-1} + (1 - \beta_2)g_t^2$
+  \State $\wh{v}_t \gets v_t / (1 - \beta_2^t)$
+  \Statex
+
+  \If{$t > 1$}
+    \State $d_t \gets \dfrac{|f_t - f_{t-1}|}{\min\{f_t, f_{t-1}\} - f^\star}$
+    \State $\wh{d}_t \gets \text{clip}(d_t, [1 / c, c])$
+    \State $\wt{d}_t \gets \beta_3 \wt{d}_{t-1} + (1 - \beta_3)\wh{d}_t$
+  \Else
+    \State $\wt{d}_t \gets 1$
+  \EndIf
+  \Statex
+
+  \State $\theta_t \gets \theta_{t-1}
+                         - \dfrac{\alpha_1}{\wt{d}_t}
+                           \dfrac{\wh{m}_t}{\sqrt{\wh{v}_t} + \epsilon}$
+\EndWhile
+\State \Return $\theta_t$
+
+\end{algorithmic}
+\end{document}

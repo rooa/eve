@@ -2,24 +2,20 @@
 
 from argparse import ArgumentParser
 
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-from eve.fig.utils import OPT_COLORS, OPT_LABELS, sns_set_defaults, save_tight
+from eve.fig.utils import OPT_COLORS, OPT_LABELS, Fig
 
 
 def main():
     """Create and save the legend."""
     arg_parser = ArgumentParser()
-    arg_parser.add_argument("--save-path", type=str, required=True)
+    arg_parser.add_argument("--save-dir", type=str, required=True)
+    arg_parser.add_argument("--fig-name", type=str, required=True)
     arg_parser.add_argument("--fig-size", type=float, nargs=2, required=True)
     arg_parser.add_argument("--context", type=str, default="paper")
-    arg_parser.add_argument("--font", type=str, default=None)
     args = arg_parser.parse_args()
 
-    sns_set_defaults(args.context, style="ticks", font=args.font)
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
+    fig = Fig(args.context)
+    ax = fig.fig.add_subplot(111)
 
     # Plot a dummy figure to get a legend
     opts = ["eve", "adam", "adamax", "rmsprop", "adagrad", "adadelta", "sgd"]
@@ -29,16 +25,26 @@ def main():
 
     # Copy the legend to a new figure
     lhandles, llabels = ax.get_legend_handles_labels()
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    ax.legend(lhandles, llabels, ncol=7, scatterpoints=1, loc="center",
-              markerscale=1, mode="expand", borderpad=0, borderaxespad=0)
-    sns.despine(fig, ax, top=True, bottom=True, left=True, right=True,
-                trim=True)
+    fig = Fig(args.context)
+    ax = fig.fig.add_subplot(111)
+    ax.legend(
+        lhandles,
+        llabels,
+        ncol=len(opts),
+        scatterpoints=1,
+        loc="center",
+        markerscale=1,
+        mode="expand",
+        borderpad=0,
+        borderaxespad=0,
+    )
+    fig.sns.despine(
+        fig.fig, ax, top=True, bottom=True, left=True, right=True, trim=True
+    )
     ax.set_xticks([])
     ax.set_yticks([])
 
-    save_tight(fig, args.fig_size, args.save_path)
+    fig.save(args.fig_size, args.save_dir, args.fig_name)
 
 
 if __name__ == "__main__":

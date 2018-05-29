@@ -1,0 +1,35 @@
+\documentclass[preview,varwidth=7in,border=0mm]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[no-math]{fontspec}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\captionsetup{labelformat=simple,labelsep=period,justification=centering}
+\renewcommand{\captionfont}{\small\fontspec{futura_light.ttf}[Path=\string~/.fonts/]}
+\renewcommand{\captionlabelfont}{\fontspec{futura_medium.ttf}[Path=\string~/.fonts/]}
+
+\begin{document}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{optslegend.pdf}
+    \end{subfigure}
+
+    \hfill%
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{resnet.pdf}
+        \caption{Residual CNN for image classification.}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ptb.pdf}
+        \caption{RNN for language modeling. Inset shows last 10 epochs.}
+    \end{subfigure}
+    \hfill%
+\end{figure}
+
+\end{document}

@@ -1,0 +1,30 @@
+\documentclass[preview,varwidth=7in,border=0mm]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[no-math]{fontspec}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\captionsetup{labelformat=simple,labelsep=period,justification=centering}
+\renewcommand{\captionfont}{\small\fontspec{futura_light.ttf}[Path=\string~/.fonts/]}
+\renewcommand{\captionlabelfont}{\fontspec{futura_medium.ttf}[Path=\string~/.fonts/]}
+
+\begin{document}
+
+\begin{figure}
+    \centering
+    \hfill%
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{bests.pdf}
+        \caption{Eve compared with different decay strategies.}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{exps.pdf}
+        \caption{Adam with different exponential decay strengths.}
+    \end{subfigure}
+    \hfill%
+\end{figure}
+
+\end{document}

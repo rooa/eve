@@ -40,7 +40,7 @@ by following the negative (sub)gradient. However, vanilla SGD struggles with
 making progress, and is insufficient for solving large-scale problems. One issue
 arises from the use of a global learning rate in vanilla SGD. Due to
 ill-conditioning of the optimization problems, setting this learning rate is
-tricky. To prevent the loss from ``bouncing around'' or diverging in directions
+tricky. To prevent the loss from "bouncing around" or diverging in directions
 with high curvature, the learning rate must be kept small. But this leads to
 slow progress in directions with low curvature. In many problems, the sparsity
 of gradients creates an additional challenge for SGD. Some features might occur

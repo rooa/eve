@@ -292,8 +292,9 @@ searched over the same set as in the previous experiments.
 
 For $\gamma$, we searched over a different set of values for each of the decay
 policies, such that final learning rate after 100 epochs would be $\alpha_1 / k$
-where $k \in \{1 \times 10^{4}, 5 \times 10^{3}, 1 \times 10^{3}, 5 \times
-10^{2}, 1 \times 10^{2}, 5 \times 10^{1}, 1 \times 10^{1}, 5 \times 10^{0}\}$.
+where $k$ is in $\{1 \times 10^{4}$, $5 \times 10^{3}$, $1 \times 10^{3}$, $5
+\times 10^{2}$, $1 \times 10^{2}$, $5 \times 10^{1}$, $1 \times 10^{1}$, $5
+\times 10^{0}\}$.
 
 @fig:compsched(a) compares Eve with the best exponential decay, the best $1/t$
 decay, and the best $1/\sqrt{t}$ decay applied to Adam. We see that using decay
@@ -365,7 +366,7 @@ Finally, we studied the hyperparameters of Eve and saw that a range of choices
 leads to performance improvement over Adam.
 
 One limitation of our method is that it requires knowledge of the global
-expected minimum of the objective function. One possible approach to address
+minimum of the objective function. One possible approach to address
 this issue is to use an estimate of the minimum, and update this estimate as
-training progresses. This approach has been applied successfully when using
-Polyak step sizes with the subgradient method.
+training progresses. This approach has been used when using Polyak step sizes
+with the subgradient method.

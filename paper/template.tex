@@ -1,0 +1,84 @@
+\documentclass[letterpaper,twocolumn]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[babel=true]{microtype}
+\usepackage[margin=0.75in]{geometry}
+\usepackage[american]{babel}
+\usepackage[unicode=true,hidelinks]{hyperref}
+\usepackage[square,numbers,super,sort&compress]{natbib}
+\usepackage{etoolbox}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{dblfloatfix}
+\usepackage{footnote}
+\usepackage{mleftright}
+
+% Configure basic typography
+\fussy
+\pretolerance 400
+\emergencystretch 2em
+
+% Footnote without marker
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{\raggedright \hspace{-20pt} #1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+% Use mleftright
+\renewcommand\left\mleft
+\renewcommand\right\mright
+
+% Put year in citet
+\newcommand*{\nolink}[1]{%
+  {\protect\NoHyper#1\protect\endNoHyper}%
+}
+\renewcommand{\citet}[1]{\nolink{\citeauthor{#1} (\citeyear{#1})}\citep{#1}}
+
+% Set defaults for figure placement
+\makeatletter
+\def\fps@figure{!tb}
+\makeatother
+
+% Automatically use \left and \right with parentheses
+\makeatletter
+\def\resetMathstrut@{%
+  \setbox\z@\hbox{%
+    \mathchardef\@tempa\mathcode`\[\relax
+    \mathchardef\@tempc\mathcode`\]\relax
+    \def\@tempb##1"##2##3{\the\textfont"##3\char"}%
+    \expandafter\@tempb\meaning\@tempa \relax
+  }%
+  \ht\Mathstrutbox@\ht\z@ \dp\Mathstrutbox@\dp\z@}
+\makeatother
+\begingroup
+  \catcode`(\active \xdef({\left\string(}
+  \catcode`)\active \xdef){\right\string)}
+\endgroup
+\mathcode`(="8000 \mathcode`)="8000
+
+% Set column separation
+\setlength{\columnsep}{0.3in}
+
+\title{\vspace{-2em} $title$}
+\author{$for(author)$ $author$ \quad $endfor$ \\ {\small $institute$} \\ {\small \texttt{$email$}}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\blfootnote{\scriptsize $thanks$.}
+
+\vspace{-3em}
+\abstract{$abstract$}
+
+$body$
+
+\bibliographystyle{humannat}
+\bibliography{$bibliography$}
+
+\end{document}

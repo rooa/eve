@@ -4,20 +4,17 @@
 \usepackage[no-math]{fontspec}
 \usepackage{cfr-lm}
 \usepackage[babel=true,protrusion=true,expansion=true]{microtype}
-\usepackage[hmargin=46pt,tmargin=72pt,bmargin=120pt,footskip=60pt]{geometry}
+\usepackage[hmargin=46pt,tmargin=1in,bmargin=1.5in,footskip=1in]{geometry}
 \usepackage[american]{babel}
 \usepackage{nowidow}
 \usepackage[unicode=true,hidelinks]{hyperref}
 \usepackage{fancyhdr}
 \usepackage[absolute]{textpos}
-\usepackage{sectsty}
 \usepackage{titlesec}
 \usepackage[square,numbers,super,sort&compress]{natbib}
-\usepackage{etoolbox}
 \usepackage{mathtools}
 \usepackage{amssymb}
 \usepackage{amsthm}
-\usepackage{amsopn}
 \usepackage{mleftright}
 \usepackage{bm}
 \usepackage{graphicx}
@@ -40,6 +37,9 @@
   {\protect\NoHyper#1\protect\endNoHyper}%
 }
 \renewcommand{\citet}[1]{\nolink{\citeauthor{#1} (\citeyear{#1})}\citep{#1}}
+
+% Fix tables
+\makesavenoteenv{longtable}
 
 % Place floats at the top of float-only pages
 \makeatletter
@@ -70,10 +70,14 @@
 \endgroup
 \mathcode`(="8000 \mathcode`)="8000
 
-% Configure headings
-\titleformat{\section}[hang]{\raggedright\normalfont\fontsize{14}{0}\selectfont}{\thesection}{1em}{}
+% Pandoc tightlist
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
-\newfontfamily{\subsechead}{Latin Modern Roman}[LetterSpace=8,WordSpace=2.5]
+% Configure headings
+\titleformat{\section}[hang]{\raggedright\normalfont\Large}{\thesection}{1em}{}
+
+\newfontfamily{\subsechead}{Latin Modern Roman}[LetterSpace=7.5,WordSpace=2.5]
 \newfontfamily{\subseclab}{Latin Modern Roman}
 \titleformat{\subsection}[hang]{\raggedright\normalfont\normalsize\subsechead}{\subseclab\thesubsection}{1em}{\MakeUppercase}
 
@@ -93,7 +97,7 @@
 \fancyfoot[R]{\footnotesize{\thepage}}
 
 % Configure acronyms
-\newfontfamily{\acros}{Latin Modern Roman Caps}[Numbers=OldStyle,LetterSpace=7.5]
+\newfontfamily{\acros}{Latin Modern Roman Caps}[Numbers=OldStyle,LetterSpace=5]
 \renewcommand*{\acsfont}[1]{{\acros \MakeLowercase{#1}}}
 
 $for(include-before)$
@@ -101,10 +105,10 @@ $include-before$
 $endfor$
 
 \title{%
-\vspace{-8ex}%
+\vspace{-5ex}%
 \begin{minipage}{\textwidth}%
 \begin{flushleft}%
-{\normalfont\fontsize{21}{0}\selectfont $title$}%
+{\normalfont\huge $title$}%
 \end{flushleft}%
 \end{minipage}%
 \vspace{-1ex}%
@@ -114,20 +118,18 @@ $endfor$
 \begin{minipage}{\textwidth}%
 \begin{flushleft}%
 \hspace{-0.5em}%
-{\normalfont\fontsize{12}{0}\selectfont $for(author)$ $author$ \quad $endfor$}%
+{\normalfont\large $for(author)$ $author$ \quad $endfor$}%
 \end{flushleft}%
 \end{minipage}%
 }
 
-\date{\vspace{-2ex}}
+\date{}
 
 \begin{document}
 
 % Configure basic typography
-\fussy
 \nowidow[2]
-\parindent=3em
-\parskip=0pt
+\parindent=2.5em
 \lefthyphenmin=2
 \righthyphenmin=3
 
@@ -136,13 +138,10 @@ $endfor$
 
 \textblockorigin{0in}{11in}
 \setlength{\TPHorizModule}{1pt}
-\setlength{\TPVertModule}{1pt}
-\begin{textblock}{400}(46,-75)
+\setlength{\TPVertModule}{1in}
+\begin{textblock}{400}(46,-1)
     \parindent=0pt
-    \scriptsize
-    \normalfont
-    \raggedright
-    \baselineskip=9pt
+    \normalfont\scriptsize\raggedright
 
     \hrule
     \vspace{1.5ex}
@@ -161,7 +160,6 @@ $body$
 
 $if(bibliography)$
 \footnotesize
-\setlength{\bibsep}{0pt plus 0.3ex}
 \bibliographystyle{humannat}
 \bibliography{$bibliography$}
 $endif$

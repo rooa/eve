@@ -1,32 +1,35 @@
 \documentclass[letterpaper,twocolumn]{article}
 
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage[babel=true]{microtype}
-\usepackage[margin=0.75in]{geometry}
+\usepackage[no-math]{fontspec}
+\usepackage{cfr-lm}
+\usepackage[babel=true,protrusion=true,expansion=true]{microtype}
+\usepackage[hmargin=46pt,tmargin=72pt,bmargin=120pt,footskip=60pt]{geometry}
 \usepackage[american]{babel}
+\usepackage{nowidow}
 \usepackage[unicode=true,hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[absolute]{textpos}
+\usepackage{sectsty}
+\usepackage{titlesec}
 \usepackage[square,numbers,super,sort&compress]{natbib}
 \usepackage{etoolbox}
 \usepackage{mathtools}
 \usepackage{amssymb}
-\usepackage{graphicx}
-\usepackage{dblfloatfix}
-\usepackage{footnote}
+\usepackage{amsthm}
+\usepackage{amsopn}
 \usepackage{mleftright}
-
-% Configure basic typography
-\fussy
-\pretolerance 400
-\emergencystretch 2em
-
-% Footnote without marker
-\newcommand\blfootnote[1]{%
-  \begingroup
-  \renewcommand\thefootnote{}\footnote{\raggedright \hspace{-20pt} #1}%
-  \addtocounter{footnote}{-1}%
-  \endgroup
-}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{dblfloatfix}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{footnote}
+\usepackage{acronym}
+\usepackage{upquote}
+\usepackage{fancyvrb}
 
 % Use mleftright
 \renewcommand\left\mleft
@@ -38,9 +41,16 @@
 }
 \renewcommand{\citet}[1]{\nolink{\citeauthor{#1} (\citeyear{#1})}\citep{#1}}
 
-% Set defaults for figure placement
+% Place floats at the top of float-only pages
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpbot}{0pt plus 1fil}
+\makeatother
+
+% Set defaults for figure, table placement
 \makeatletter
 \def\fps@figure{!tb}
+\def\fps@table{!tb}
 \makeatother
 
 % Automatically use \left and \right with parentheses
@@ -60,25 +70,100 @@
 \endgroup
 \mathcode`(="8000 \mathcode`)="8000
 
-% Set column separation
-\setlength{\columnsep}{0.3in}
+% Configure headings
+\titleformat{\section}[hang]{\raggedright\normalfont\fontsize{14}{0}\selectfont}{\thesection}{1em}{}
 
-\title{\vspace{-2em} $title$}
-\author{$for(author)$ $author$ \quad $endfor$ \\ {\small $institute$} \\ {\small \texttt{$email$}}}
-\date{}
+\newfontfamily{\subsechead}{Latin Modern Roman}[LetterSpace=8,WordSpace=2.5]
+\newfontfamily{\subseclab}{Latin Modern Roman}
+\titleformat{\subsection}[hang]{\raggedright\normalfont\normalsize\subsechead}{\subseclab\thesubsection}{1em}{\MakeUppercase}
+
+\titleformat{\subsubsection}[hang]{\raggedright\normalfont\normalsize\itshape}{\normalfont\thesubsubsection}{0.5em}{}
+
+\newfontfamily{\parahead}{Latin Modern Roman Caps}[Numbers=OldStyle,LetterSpace=5,WordSpace=1.25]
+\titleformat{\paragraph}[runin]{\parahead\MakeLowercase}{}{0pt}{}
+\titlespacing*{\paragraph}{0pt}{0pt}{20pt}
+
+% Set column separation
+\setlength{\columnsep}{1.6em}
+
+% Configure page no.
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[R]{\footnotesize{\thepage}}
+
+% Configure acronyms
+\newfontfamily{\acros}{Latin Modern Roman Caps}[Numbers=OldStyle,LetterSpace=7.5]
+\renewcommand*{\acsfont}[1]{{\acros \MakeLowercase{#1}}}
+
+$for(include-before)$
+$include-before$
+$endfor$
+
+\title{%
+\vspace{-8ex}%
+\begin{minipage}{\textwidth}%
+\begin{flushleft}%
+{\normalfont\fontsize{21}{0}\selectfont $title$}%
+\end{flushleft}%
+\end{minipage}%
+\vspace{-1ex}%
+}
+
+\author{%
+\begin{minipage}{\textwidth}%
+\begin{flushleft}%
+\hspace{-0.5em}%
+{\normalfont\fontsize{12}{0}\selectfont $for(author)$ $author$ \quad $endfor$}%
+\end{flushleft}%
+\end{minipage}%
+}
+
+\date{\vspace{-2ex}}
 
 \begin{document}
 
+% Configure basic typography
+\fussy
+\nowidow[2]
+\parindent=3em
+\parskip=0pt
+\lefthyphenmin=2
+\righthyphenmin=3
+
 \maketitle
+\thispagestyle{fancy}
 
-\blfootnote{\scriptsize $thanks$.}
+\textblockorigin{0in}{11in}
+\setlength{\TPHorizModule}{1pt}
+\setlength{\TPVertModule}{1pt}
+\begin{textblock}{400}(46,-75)
+    \parindent=0pt
+    \scriptsize
+    \normalfont
+    \raggedright
+    \baselineskip=9pt
 
-\vspace{-3em}
-\abstract{$abstract$}
+    \hrule
+    \vspace{1.5ex}
+
+    $if(institute)$ $for(institute)$ $institute$. $endfor$ $endif$
+    $if(thanks)$ $thanks$. $endif$
+    $if(email)$ \phantom{*}Email:~\texttt{$email$}. $endif$
+\end{textblock}
+
+$if(abstract)$
+\section*{Abstract}
+$abstract$
+$endif$
 
 $body$
 
+$if(bibliography)$
+\footnotesize
+\setlength{\bibsep}{0pt plus 0.3ex}
 \bibliographystyle{humannat}
 \bibliography{$bibliography$}
+$endif$
 
 \end{document}

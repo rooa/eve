@@ -4,9 +4,10 @@ author:
   - Hiroaki Hayashi^1,\*^
   - Jayanth Koushik^1,\*^
   - Graham Neubig^1^
-institute: ^1^Carnegie Mellon University
+institute:
+  - ^1^Carnegie Mellon University
 email: \{hiroakih,jkoushik,gneubig\}\@cs.cmu.edu
-thanks: ^\*^Equal contribution
+thanks: \*Equal contribution
 abstract: Adaptive gradient methods for stochastic optimization adjust the
     learning rate for each parameter locally. However, there is also a global
     learning rate which must be tuned in order to get the best performance. In
@@ -33,19 +34,25 @@ layout: default
 \newcommand{\wt}[1]{\widetilde{#1}}
 \newenvironment{widefig}{\renewenvironment{figure}{\begin{figure*}[!tb]\centering}{\end{figure*}}}{}
 
+\acrodef{CNN}{Convolutional Neural Network}
+\acrodef{RNN}{Recurrent Neural Network}
+\acrodef{SGD}{Stochastic Gradient Descent}
+\acrodef{PTB}{Penn Treebank}
+\acrodef{CIFAR 100}{CIFAR 100}
+
 # Introduction {#sec:intro}
 Training deep neural networks is a challenging non-convex optimization problem.
-Stochastic gradient descent (SGD) is a simple way to move towards local optima
-by following the negative (sub)gradient. However, vanilla SGD struggles with
-making progress, and is insufficient for solving large-scale problems. One issue
-arises from the use of a global learning rate in vanilla SGD. Due to
-ill-conditioning of the optimization problems, setting this learning rate is
-tricky. To prevent the loss from "bouncing around" or diverging in directions
-with high curvature, the learning rate must be kept small. But this leads to
-slow progress in directions with low curvature. In many problems, the sparsity
-of gradients creates an additional challenge for SGD. Some features might occur
-very infrequently, but might be very informative. Therefore, these features
-should be given a large learning rate when observed.
+\ac{SGD} is a simple way to move towards local optima by following the negative
+(sub)gradient. However, vanilla \ac{SGD} struggles with making progress, and is
+insufficient for solving large-scale problems. One issue arises from the use of
+a global learning rate in vanilla \ac{SGD}. Due to ill-conditioning of the
+optimization problems, setting this learning rate is tricky. To prevent the loss
+from "bouncing around" or diverging in directions with high curvature, the
+learning rate must be kept small. But this leads to slow progress in directions
+with low curvature. In many problems, the sparsity of gradients creates an
+additional challenge for \ac{SGD}. Some features might occur very infrequently,
+but might be very informative. Therefore, these features should be given a large
+learning rate when observed.
 
 The issues highlighted above motivate the need for adaptive learning rates that
 are local to each parameter in the optimization problem. While there has been
@@ -57,7 +64,7 @@ if the gradients for some parameter have been large, its learning rate is
 reduced; and if the gradients have been small, the learning rate is increased.
 Variations of Adagrad such as RMSprop[@tieleman2012lecture],
 Adadelta[@zeiler2012adadelta], or Adam[@kingma2014adam] are, by far, the most
-popular alternatives to vanilla SGD for training deep neural networks.
+popular alternatives to vanilla \ac{SGD} for training deep neural networks.
 
 In addition to parameter-specific local learning rates, the adaptive methods
 described above also have a global learning rate which determines the overall
@@ -75,8 +82,8 @@ the initial learning rate. $d_t$ depends on the history of stochastic objective
 function evaluations, and captures two properties of its behavior: variation in
 consecutive iterations and sub-optimality. Intuitively, high variations should
 reduce the learning rate and high sub-optimality should increase the learning
-rate. We specifically apply this idea to Adam[@kingma2014adam], a popular
-method for training deep neural networks.
+rate. We specifically apply this idea to Adam[@kingma2014adam], a popular method
+for training deep neural networks.
 
 
 # Related work {#sec:relwork}
@@ -238,24 +245,24 @@ the models don't have explicit regularization, $f^\star$ is set to 0 for
 training Eve.
 
 ## Training CNNs {#sec:exp_cnns}
-First we compare Eve with other optimizers for training a convolutional neural
-network (CNN). The optimizers we compare against are Adam, Adamax, RMSprop,
-Adagrad, Adadelta, and SGD with Nesterov momentum[@nesterov1983method] (momentum
-$0.9$). The learning rate was searched over $\{1\times 10^{-6}$, $5\times
-10^{-6}$, $1\times 10^{-5}$, $5\times 10^{-5}$, $1\times 10^{-4}$, $5\times
-10^{-4}$, $1\times 10^{-3}$, $5\times 10^{-3}$, $1\times 10^{-2}$, $5\times
-10^{-2}$, $1\times 10^{-1}\}$, and the value which led to the lowest final loss
-was selected for reporting results. For Adagrad, Adamax, and Adadelta, we
-additionally searched over the prescribed default learning rates ($10^{-2}$,
-$2\times 10^{-3}$, and $1$ respectively).
+First we compare Eve with other optimizers for training a \ac{CNN}. The
+optimizers we compare against are Adam, Adamax, RMSprop, Adagrad, Adadelta, and
+\ac{SGD} with Nesterov momentum[@nesterov1983method] (momentum $0.9$). The
+learning rate was searched over $\{1\times 10^{-6}$, $5\times 10^{-6}$, $1\times
+10^{-5}$, $5\times 10^{-5}$, $1\times 10^{-4}$, $5\times 10^{-4}$, $1\times
+10^{-3}$, $5\times 10^{-3}$, $1\times 10^{-2}$, $5\times 10^{-2}$, $1\times
+10^{-1}\}$, and the value which led to the lowest final loss was selected for
+reporting results. For Adagrad, Adamax, and Adadelta, we additionally searched
+over the prescribed default learning rates ($10^{-2}$, $2\times 10^{-3}$, and
+$1$ respectively).
 
 The model is a deep residual network[@he2016deep] with 16 convolutional layers.
 The network is regularized with batch normalization and dropout, and contains
 about 680,000 parameters, making it representative of a practical model.
 
-@fig:trloss(a) shows the results of training this model on the CIFAR 100
-dataset[@krizhevsky2009learning] for 100 epochs with a batch size of 128. We
-see that Eve outperforms all other algorithms by a large margin. It quickly
+@fig:trloss(a) shows the results of training this model on the \acs{CIFAR 100}
+dataset[@krizhevsky2009learning] for 100 epochs with a batch size of 128. We see
+that Eve outperforms all other algorithms by a large margin. It quickly
 surpasses other methods, and achieves a much lower final loss at the end of
 training.
 
@@ -267,12 +274,12 @@ training.
 \End{widefig}
 
 ## Training RNNs {#sec:exp_rnns}
-We also compare our method with other optimizers for training recurrent neural
-networks(RNNs). We use the same algorithms as in the previous experiment, and
-the learning rate search was conducted over the same set of values.
+We also compare our method with other optimizers for training \acp{RNN}. We use
+the same algorithms as in the previous experiment, and the learning rate search
+was conducted over the same set of values.
 
-We construct a RNN for character-level language modeling task on Penn Treebank
-(PTB)[@marcus1993building]. Specifically, the model consists of a 2-layer
+We construct a \ac{RNN} for character-level language modeling task on
+\ac{PTB}[@marcus1993building]. Specifically, the model consists of a 2-layer
 character-level GRU[@chung2014empirical] with hidden layers of size 256, with
 0.5 dropout between layers. The sequence length is fixed to 100 characters, and
 the vocabulary is kept at the original size.
@@ -285,10 +292,10 @@ loss than Adam and Adamax.
 We also empirically compare Eve with three common decay policies: exponential
 ($\alpha_t = \alpha_1 \exp(-\gamma t)$), $1/t$ ($\alpha_t = \alpha_1 / (1 +
 \gamma t)$), and $1/\sqrt{t}$ ($\alpha_t = \alpha_1 / \sqrt{1 + \gamma t}$). We
-consider the same CIFAR 100 classification task described in @sec:exp_cnns,
-and use the same CNN model. We applied the three decay policies to Adam, and
-tuned both the initial learning rate and decay strength. Learning rate was again
-searched over the same set as in the previous experiments.
+consider the same \acs{CIFAR 100} classification task described in
+@sec:exp_cnns, and use the same CNN model. We applied the three decay policies
+to Adam, and tuned both the initial learning rate and decay strength. Learning
+rate was again searched over the same set as in the previous experiments.
 
 For $\gamma$, we searched over a different set of values for each of the decay
 policies, such that final learning rate after 100 epochs would be $\alpha_1 / k$
@@ -318,8 +325,8 @@ performance without tuning an additional hyperparameter.
 ## Effect of hyperparameters {#sec:exp_hyp}
 In this experiment, we study the behavior of Eve with respect to the two
 hyperparameters introduced over Adam: $\beta_3$ and $c$. We use the previously
-presented ResNet model on CIFAR 100, and a RNN model trained for question
-answering, on question 14 (picked randomly) of the bAbI-10k
+presented ResNet model on \acs{CIFAR 100}, and a \ac{RNN} model trained for
+question answering, on question 14 (picked randomly) of the bAbI-10k
 dataset[@weston2015towards]. The question answering model composes two separate
 GRUs (with hidden layers of size 256 each) for question sentences, and story
 passages.
@@ -358,15 +365,15 @@ each parameter, and adaptively tunes the global learning rate using feedback
 from the objective function. Our algorithm is simple to implement, and is
 efficient, both computationally, and in terms of memory.
 
-Through experiments with convolutional and recurrent neural networks, we showed
-that Eve outperforms other state of the art optimizers in optimizing large
-neural network models. We also compared Eve with learning rate decay methods and
-showed that Eve can achieve similar or better performance with far less tuning.
-Finally, we studied the hyperparameters of Eve and saw that a range of choices
-leads to performance improvement over Adam.
+Through experiments with \acp{CNN} and \acp{RNN}, we showed that Eve outperforms
+other state of the art optimizers in optimizing large neural network models. We
+also compared Eve with learning rate decay methods and showed that Eve can
+achieve similar or better performance with far less tuning. Finally, we studied
+the hyperparameters of Eve and saw that a range of choices leads to performance
+improvement over Adam.
 
-One limitation of our method is that it requires knowledge of the global
-minimum of the objective function. One possible approach to address
-this issue is to use an estimate of the minimum, and update this estimate as
-training progresses. This approach has been used when using Polyak step sizes
-with the subgradient method.
+One limitation of our method is that it requires knowledge of the global minimum
+of the objective function. One possible approach to address this issue is to use
+an estimate of the minimum, and update this estimate as training progresses.
+This approach has been used when using Polyak step sizes with the subgradient
+method.

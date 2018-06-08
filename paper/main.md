@@ -1,5 +1,5 @@
 ---
-title: "Eve: A Gradient Based Optimization Method with Locally and Globally Adaptive Learning Rate"
+title: "Eve: A Gradient Based Optimization Method with Locally and Globally Adaptive Learning Rates"
 author:
   - Hiroaki Hayashi^1,\*^
   - Jayanth Koushik^1,\*^
@@ -43,16 +43,15 @@ layout: default
 # Introduction {#sec:intro}
 Training deep neural networks is a challenging non-convex optimization problem.
 \ac{SGD} is a simple way to move towards local optima by following the negative
-(sub)gradient. However, vanilla \ac{SGD} struggles with making progress, and is
-insufficient for solving large-scale problems. One issue arises from the use of
-a global learning rate in vanilla \ac{SGD}. Due to ill-conditioning of the
-optimization problems, setting this learning rate is tricky. To prevent the loss
-from "bouncing around" or diverging in directions with high curvature, the
-learning rate must be kept small. But this leads to slow progress in directions
-with low curvature. In many problems, the sparsity of gradients creates an
-additional challenge for \ac{SGD}. Some features might occur very infrequently,
-but might be very informative. Therefore, these features should be given a large
-learning rate when observed.
+(sub)gradient. However, vanilla \ac{SGD} is slow in achieving convergence for
+large-scale problems. One issue arises from the use of a global learning rate,
+which is difficult to set. To prevent the loss from "bouncing around" or
+diverging in directions with high curvature, the learning rate must be kept
+small. But this leads to slow progress in directions with low curvature. In many
+problems, the sparsity of gradients creates an additional challenge for
+\ac{SGD}. Some parameters might be used very infrequently, but still be very
+informative. Therefore, these parameters should be given a large learning rate
+when observed.
 
 The issues highlighted above motivate the need for adaptive learning rates that
 are local to each parameter in the optimization problem. While there has been
@@ -80,7 +79,7 @@ Our algorithm, Eve, introduces a scalar coefficient $d_t$ which is used to adapt
 the global learning rate to be $\alpha_t = \alpha_1 / d_t$, where $\alpha_1$ is
 the initial learning rate. $d_t$ depends on the history of stochastic objective
 function evaluations, and captures two properties of its behavior: variation in
-consecutive iterations and sub-optimality. Intuitively, high variations should
+consecutive iterations and sub-optimality. Intuitively, high variation should
 reduce the learning rate and high sub-optimality should increase the learning
 rate. We specifically apply this idea to Adam[@kingma2014adam], a popular method
 for training deep neural networks.
@@ -110,7 +109,7 @@ every some number of iterations, or reducing the learning rate when the loss on
 a held out validation set stalls. @smith2017cyclical proposes a schedule where
 the learning rate is varied cyclically between a range of values.
 
-@schaul2013no takes up the more ambitious goal of completely eliminating the
+@schaul2013no take up the more ambitious goal of completely eliminating the
 learning rate parameter, with a second-order method that computes the diagonal
 Hessian using the bbprop algorithm[@lecun1998efficient]. Note, however, that the
 method is only applicable under mean squared error loss. Finally, for convex
@@ -134,14 +133,12 @@ given by
 $$
   m_t = \beta_1 m_{t-1} + (1 - \beta_1)g_t,
 $$ {#eq:m}
-
 with $m_0 = 0$. A correction term is applied to remove the bias caused by
 initializing with 0.
 
 $$
   \wh{m}_t = m_t / (1 - \beta_1^t).
 $$ {#eq:mhat}
-
 $\wh{m}_t$ is an unbiased estimate of the gradient's first moment assuming
 stationarity ($\E{\wh{m}_t} = \E{g_t}$). A similar term is computed using the
 squared gradients:
@@ -152,7 +149,6 @@ $$
   \wh{v}_t &= v_t / (1 - \beta_2^t).
 \end{aligned}
 $$ {#eq:vvhat}
-
 $\wh{v}_t$ is an unbiased estimate of the gradient's uncentered second moment
 ($\E{\wh{v}_t} = \E{g_t^2}$). Then, Adam updates parameters using the update
 equation
@@ -190,9 +186,9 @@ can result in the learning rate blowing up due to taking an even bigger step,
 causing the numerator to further increase, and so forth. To prevent this, we
 make modifications to stabilize the update rule by first replacing $f_t$ in the
 numerator of @eq:alpha with $\min\{f_t, f_{t-1}\}$. This will reduce the chance
-of the cycle mentioned above, by keeping the numerator at the same value if the
-loss increases. In addition, we clip the term with a range parameterized by a
-constant $c$ to avoid extreme values.
+of the vicious cycle mentioned above by keeping the numerator at the same value
+if the loss increases. In addition, we clip the term with a range parameterized
+by a constant $c$ to avoid extreme values.
 
 $$
   \wh{d}_t = \text{clip}(d_t, [1 / c, c]).
@@ -233,8 +229,8 @@ over other methods in optimizing complex, practical models.
 
 
 # Experiments {#sec:exp}
-Now we conduct experiments to compare Eve with other popular optimizers used for
-optimizing deep learning models. We use the same hyperparameter settings (as
+Now we conduct experiments to compare Eve with other popular optimizers used in
+deep learning. We use the same hyperparameter settings (as
 described in @fig:alg) for all experiments. We also conduct an experiment to
 study the behavior of Eve with respect to the new hyperparameters $\beta_3$ and
 $c$. For each experiment, we use the same random number seed when comparing
@@ -346,7 +342,7 @@ lead to performance close to the best. In general, for different models and/or
 tasks, not all hyperparameter settings lead to improved performance over Adam,
 and we did not observe any consistent trend in the performance across
 hyperparameters. However, the default values suggested in this paper
-consistently lead to better performance on a variety of tasks. We also note that
+consistently lead to good performance on a variety of tasks. We also note that
 the default hyperparameter values were not selected based on this experiment,
 but through an informal initial search using a smaller model.
 

@@ -2,8 +2,7 @@
 
 This repository contains code and results for the paper
 
-**Eve: A Gradient Based Optimization Method with Locally and Globally Adaptive
-Learning rate**<br>
+**Eve: A Gradient Based Optimization Method with Locally and Globally Adaptive Learning Rate**<br>
 [Hiroaki Hayashi](https://www.cs.cmu.edu/~hiroakih/)<sup>\*</sup>,
 [Jayanth Koushik](https://jayanthkoushik.github.io)<sup>\*</sup>,
 [Graham Neubig](http://phontron.com)<br>
@@ -23,21 +22,31 @@ source activate eve
 source deactivate eve
 ```
 
-Note that this environment is not sufficient to generate figures;
-that requires a latex installation. For figures, the provided docker file could
-be more convenient. It does not support GPUs however, and is not suitable for
-running experiments except for debugging. Refer to the Docker docks for details
-on using images. The gist is that the image is created by running
+A suitable Keras backend is required for GPU support. Refer to [the documentation](https://keras.io/#installation)
+for instructions.
+
+## Code
+A Keras implementation of the algorithm is in `eve/optim/eve.py`. The `Eve`
+class in this file can be passed to the `model.compile` method in Keras (using
+the `optimizer` argument).
+
+Scripts for the various experiments are inside `eve/exp/runners`. Run these
+scripts from the root directory, as such:
 
 ```bash
-docker build -t <image name>
+python -m eve.exp.runners.compsched --help
 ```
 
-at the root of the repository. Then launch a container with the image using
+The help command provides information about choices for the various arguments.
+Learning rate schedules and datasets are referred to by their class names
+(in `eve/exp/lrscheds.py` and `eve/exp/datasets.py` respectively). Arguments to
+these classes are passed through the command line as json strings. Refer to
+the paper for values used in our experiments.
 
-```bash
-docker run --rm -it -v <repository root dir>:/project
-```
-
-This will put you in a Ubuntu environment where `/project` is the root of the
-repository.
+## Citation
+    @article{hayashi2017eve,
+      title={Eve: A Gradient Based Optimization Method with Locally and Globally Adaptive Learning Rate},
+      author={Hayashi, Hiroaki and Koushik, Jayanth and Neubig, Graham},
+      journal={arXiv preprint arXiv:1611.01505},
+      year={2017}
+    }

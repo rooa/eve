@@ -7,6 +7,6 @@ dependencies:
     - pillow
     - scipy
     - seaborn
-    - tqdm
+    - tqdm>=4.0
     - pygpu=0.6.4
-    - keras
+    - keras>=2.0,<2.1

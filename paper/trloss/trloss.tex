@@ -1,13 +1,13 @@
 \documentclass[preview,varwidth=7in,border=0mm]{standalone}
 \usepackage[T1]{fontenc}
 \usepackage[no-math]{fontspec}
+\usepackage{cfr-lm}
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
 
 \captionsetup{labelformat=simple,labelsep=period,justification=centering}
-\renewcommand{\captionfont}{\small\fontspec{futura_light.ttf}[Path=\string~/.fonts/]}
-\renewcommand{\captionlabelfont}{\fontspec{futura_medium.ttf}[Path=\string~/.fonts/]}
+\renewcommand{\captionlabelfont}{\bfseries}
 
 \begin{document}
 
@@ -22,12 +22,12 @@
     \begin{subfigure}[t]{0.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{resnet.pdf}
-        \caption{Residual CNN for image classification.}
+        \caption{Residual \textsc{cnn} for image classification.}
     \end{subfigure}%
     \begin{subfigure}[t]{0.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{ptb.pdf}
-        \caption{RNN for language modeling. Inset shows last 10 epochs.}
+        \caption{\textsc{rnn} for language modeling. Inset is last 10 epochs.}
     \end{subfigure}
     \hfill%
 \end{figure}

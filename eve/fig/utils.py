@@ -35,12 +35,11 @@ class Fig:
         # Configure pgf
         "backend": "pgf",
         "pgf.texsystem": "lualatex",
-        "pgf.rcfonts": False,  # Fonts are manually specified
-        "pgf.preamble": [
-            r"\usepackage[no-math]{fontspec}",
-            r"\usepackage[dvipsnames]{xcolor}",
-            r"\setmainfont{futura_book.ttf}[Path=\string~/.fonts/]",
-        ],
+        "pgf.preamble": [r"\usepackage[dvipsnames]{xcolor}"],
+        # Configure fonts
+        "pgf.rcfonts": True,
+        "font.family": "serif",
+        "font.serif": "Latin Modern Roman",
         # Configure text
         "text.color": "k",
         "text.usetex": True,

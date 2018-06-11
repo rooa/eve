@@ -2,7 +2,7 @@
 
 This repository contains code and results for the paper
 
-**Eve: A Gradient Based Optimization Method with Locally and Globally Adaptive Learning Rates**<br>
+**[Eve: A Gradient Based Optimization Method with Locally and Globally Adaptive Learning Rates](https://arxiv.org/abs/1611.01505)**<br>
 [Hiroaki Hayashi](https://www.cs.cmu.edu/~hiroakih/)<sup>\*</sup>,
 [Jayanth Koushik](https://jayanthkoushik.github.io)<sup>\*</sup>,
 [Graham Neubig](http://phontron.com)<br>
